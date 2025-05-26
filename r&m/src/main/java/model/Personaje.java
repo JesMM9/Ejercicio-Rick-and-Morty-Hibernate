@@ -1,5 +1,9 @@
 package main.java.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 /*
  * Ejemplo contenido de un personaje:
  * 
@@ -29,19 +33,28 @@ package main.java.model;
  * 
  * 
  * */
-
+@Entity
 public class Personaje {
 
 	public static final String PERSONAJE_URL_API = "https://rickandmortyapi.com/api/character/";
 
+	@Id
 	private long id;
+	@Column
 	private String name;
+	@Column
 	private String status;
+	@Column
 	private String species;
+	@Column
 	private String type;
+	@Column
 	private String gender;
+	@Column
 	private String url;
+	@Column
 	private String created;
+	@Column
 	private String[] episode;
 
 	public Personaje(long id, String name, String status, String species, String type, String gender, String url,
