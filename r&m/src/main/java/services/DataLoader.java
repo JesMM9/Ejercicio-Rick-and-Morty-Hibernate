@@ -1,4 +1,4 @@
-package com.example.service;
+package main.java.services;
 
 import com.example.model.Personaje;
 import com.example.model.Episodio;
