@@ -1,164 +1,113 @@
-package main.java.model;
+package com.example.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
-/*
- * Ejemplo contenido de un personaje:
- * 
- * {
-      "id": 7,
-      "name": "Abradolf Lincler",
-      "status": "unknown",
-      "species": "Human",
-      "type": "Genetic experiment",
-      "gender": "Male",
-      "origin": {
-        "name": "Earth (Replacement Dimension)",
-        "url": "https://rickandmortyapi.com/api/location/20"
-      },
-      "location": {
-        "name": "Testicle Monster Dimension",
-        "url": "https://rickandmortyapi.com/api/location/21"
-      },
-      "image": "https://rickandmortyapi.com/api/character/avatar/7.jpeg",
-      "episode": [
-        "https://rickandmortyapi.com/api/episode/10",
-        "https://rickandmortyapi.com/api/episode/11"
-      ],
-      "url": "https://rickandmortyapi.com/api/character/7",
-      "created": "2017-11-04T19:59:20.523Z"
-    }
- * 
- * 
- * */
 @Entity
+@Table(name = "personaje")
 public class Personaje {
 
-	public static final String PERSONAJE_URL_API = "https://rickandmortyapi.com/api/character/";
+    @Id
+    private Long id;
 
-	@Id
-	private long id;
-	@Column
-	private String name;
-	@Column
-	private String status;
-	@Column
-	private String species;
-	@Column
-	private String type;
-	@Column
-	private String gender;
-	@Column
-	private String url;
-	@Column
-	private String created;
-	@Column
-	private String[] episode;
+    private String name;
+    private String status;
+    private String species;
+    private String type;
+    private String gender;
+    private String image;
 
-	public Personaje(long id, String name, String status, String species, String type, String gender, String url,
-			String created, String[] episode) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.status = status;
-		this.species = species;
-		this.type = type;
-		this.gender = gender;
-		this.url = url;
-		this.created = created;
-		this.episode=episode;
-	}
+    @ManyToMany(mappedBy = "characters", fetch = FetchType.LAZY)
+    private Set<Episode> episodes = new HashSet<>();
 
-	public Personaje(long id, String name, String species) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.species = species;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "origin_id")
+    private Location origin;
 
-	public long getId() {
-		return id;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    // Getters y Setters
 
-	public String getName() {
-		return name;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getSpecies() {
-		return species;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setSpecies(String species) {
-		this.species = species;
-	}
-	
-	public String getStatus() {
-		return status;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getSpecies() {
+        return species;
+    }
 
-	public String getGender() {
-		return gender;
-	}
+    public void setSpecies(String species) {
+        this.species = species;
+    }
 
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public String getGender() {
+        return gender;
+    }
 
-	public String getCreated() {
-		return created;
-	}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-	public void setCreated(String created) {
-		this.created = created;
-	}
-	
-	public String[] getEpisode() {
-		return episode;
-	}
+    public String getImage() {
+        return image;
+    }
 
-	public void setEpisode(String[] episode) {
-		this.episode = episode;
-	}
+    public void setImage(String image) {
+        this.image = image;
+    }
 
-	public Personaje() {
-		super();
-	}
+    public Set<Episode> getEpisodes() {
+        return episodes;
+    }
 
-	@Override
-	public String toString() {
-		return "Personaje [id="+id+", name="+name+", status="+status+", "
-				+ "species="+species+", type="+type+", gender="+gender+", url="+url+", created="+created+"]";
-	}
+    public void setEpisodes(Set<Episode> episodes) {
+        this.episodes = episodes;
+    }
 
-	
+    public Location getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Location origin) {
+        this.origin = origin;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 }
