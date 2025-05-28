@@ -1,33 +1,57 @@
 package main.java;
 
-import main.crud.PersonajeCRUD;
-import main.model.Personaje;
+import org.hibernate.Session;
+
+import main.java.com.hibernate.ConnectionUtil;
+import main.java.model.Personaje;
+import main.java.model.Episodio;
 
 public class Principal {
-    public static void main(String[] args) {
-        PersonajeCRUD crud = new PersonajeCRUD();
+	
+	public static void main(String[] args) {
+		
+		//Creamos y comenzamos transacción con base de datos
+		Session session=ConnectionUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+				
+		//Generamos un nuevo personaje
+		Personaje personaje=new Personaje(0, null, null, null, null, null, null, null, args);
+		
+		//Generamos un nuevo episodio
+		Episodio episodio=new Episodio(0, null, null, null, args);
+		
+		//Persistimos esta entidad
+		session.persist(personaje);
+		session.persist(episodio);
+				
+		//Hacemos commit en base de datos
+		session.getTransaction().commit();
+				
+		//Liberamos la conexión
+		session.close();
+		
+	}
+	
+	public void obtenerPersonaje() {
+		Session session=ConnectionUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		var personaje=session.find(Personaje.class, 1L);
+		
+		assert(personaje!=null && personaje.getId()==1L);
+		
+		session.close();
+		
+	}
+	
+	public void obtenerEpisodio() {
+		Session session=ConnectionUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		var episodio=session.find(Episodio.class, 1L);
+		
+		assert(episodio!=null && episodio.getId()==1L);
+		
+		session.close();
+		
+	}
 
-        // Crear personajes
-        crud.guardar(new Personaje("Alucard", "Castlevania", 95000));
-        crud.guardar(new Personaje("Goku", "Dragon Ball", 100000));
-        crud.guardar(new Personaje("Zorro", "One Piece", 80000));
-
-        // Listar
-        System.out.println("📜 Todos los personajes:");
-        crud.listarTodos().forEach(System.out::println);
-
-        // Buscar uno
-        System.out.println("\n🔍 Personaje con ID 1:");
-        System.out.println(crud.buscar(1));
-
-        // Actualizar
-        crud.actualizarPoder(1, 120000);
-        System.out.println("\n⚡ Poder actualizado:");
-        System.out.println(crud.buscar(1));
-
-        // Eliminar
-        crud.eliminar(2);
-        System.out.println("\n💀 Lista después de eliminar ID 2:");
-        crud.listarTodos().forEach(System.out::println);
-    }
 }
